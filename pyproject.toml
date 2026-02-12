@@ -1,0 +1,9 @@
+[project]
+name = "simple-agentic-ai-project"
+version = "0.1.0"
+description = "A small dependency-free agentic AI demo in Python."
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.setuptools]
+packages = ["agentic_ai"]
