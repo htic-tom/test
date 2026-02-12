@@ -43,19 +43,19 @@ This project is intentionally lightweight and requires no external API keys.
 Run a single goal:
 
 ```bash
-python main.py --goal "what time is it?" --trace
+python3 main.py --goal "what time is it?" --trace
 ```
 
 Arithmetic example:
 
 ```bash
-python main.py --goal "calculate 25 * 4 + 10" --trace
+python3 main.py --goal "calculate 25 * 4 + 10" --trace
 ```
 
 Interactive mode:
 
 ```bash
-python main.py --interactive --trace
+python3 main.py --interactive --trace
 ```
 
 ## Notes
