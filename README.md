@@ -25,19 +25,19 @@ This project is intentionally small and easy to extend.
 ## Quickstart
 
 ```bash
-python main.py --goal "calculate 22 * (7 - 2)" --trace
+python3 main.py --goal "calculate 22 * (7 - 2)" --trace
 ```
 
 Interactive mode:
 
 ```bash
-python main.py --interactive --trace
+python3 main.py --interactive --trace
 ```
 
 JSON output:
 
 ```bash
-python main.py --goal "what time is it?" --json
+python3 main.py --goal "what time is it?" --json
 ```
 
 ## Example Goals
@@ -65,7 +65,7 @@ python main.py --goal "what time is it?" --json
 ## Run Tests
 
 ```bash
-python -m unittest discover -s tests -v
+python3 -m unittest discover -s tests -v
 ```
 
 ## Extend It
