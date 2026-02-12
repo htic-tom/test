@@ -1,0 +1,2 @@
+[console_scripts]
+simple-agentic-ai = simple_agentic_ai.cli:main

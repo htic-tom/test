@@ -1,0 +1,16 @@
+README.md
+pyproject.toml
+src/simple_agentic_ai/__init__.py
+src/simple_agentic_ai/__main__.py
+src/simple_agentic_ai/agent.py
+src/simple_agentic_ai/cli.py
+src/simple_agentic_ai/config.py
+src/simple_agentic_ai/llm.py
+src/simple_agentic_ai/memory.py
+src/simple_agentic_ai/tools.py
+src/simple_agentic_ai.egg-info/PKG-INFO
+src/simple_agentic_ai.egg-info/SOURCES.txt
+src/simple_agentic_ai.egg-info/dependency_links.txt
+src/simple_agentic_ai.egg-info/entry_points.txt
+src/simple_agentic_ai.egg-info/requires.txt
+src/simple_agentic_ai.egg-info/top_level.txt

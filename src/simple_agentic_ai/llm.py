@@ -49,12 +49,52 @@ class MockProvider(LLMProvider):
                 user = m.content
                 break
 
+        # If we just received a tool result, finish with a short summary.
+        if user.startswith("Tool result:"):
+            payload = user[len("Tool result:") :].strip()
+            try:
+                tr = json.loads(payload)
+            except Exception:
+                return json.dumps({"type": "final", "answer": f"(mock) Tool returned: {payload}"}, ensure_ascii=False)
+
+            if not isinstance(tr, dict):
+                return json.dumps({"type": "final", "answer": f"(mock) Tool returned: {payload}"}, ensure_ascii=False)
+
+            if not tr.get("ok"):
+                return json.dumps(
+                    {"type": "final", "answer": f"(mock) Tool error from {tr.get('tool')}: {tr.get('error')}"},
+                    ensure_ascii=False,
+                )
+
+            tool = tr.get("tool")
+            result = tr.get("result") or {}
+
+            if tool == "time_now":
+                return json.dumps({"type": "final", "answer": str(result.get("utc_now", ""))}, ensure_ascii=False)
+            if tool == "calculator":
+                return json.dumps({"type": "final", "answer": str(result.get("value", ""))}, ensure_ascii=False)
+            if tool == "write_note":
+                note = result.get("note") or {}
+                return json.dumps({"type": "final", "answer": f"(mock) saved note at {note.get('ts')}"}, ensure_ascii=False)
+            if tool == "list_notes":
+                notes = result.get("notes") or []
+                if not notes:
+                    return json.dumps({"type": "final", "answer": "(mock) no notes yet"}, ensure_ascii=False)
+                lines = [f"- [{n.get('ts')}] {n.get('text')}" for n in notes]
+                return json.dumps({"type": "final", "answer": "(mock) notes:\n" + "\n".join(lines)}, ensure_ascii=False)
+
+            return json.dumps({"type": "final", "answer": f"(mock) Tool {tool} returned: {result}"}, ensure_ascii=False)
+
         text = user.lower()
+        if "list notes" in text or "show notes" in text:
+            return json.dumps({"type": "tool_call", "tool": "list_notes", "args": {}}, ensure_ascii=False)
         if "note" in text and ("save" in text or "write" in text):
             return json.dumps({"type": "tool_call", "tool": "write_note", "args": {"text": user}}, ensure_ascii=False)
         if "time" in text or "utc" in text:
             return json.dumps({"type": "tool_call", "tool": "time_now", "args": {}}, ensure_ascii=False)
         if any(k in text for k in ["calc", "calculate", "+", "-", "*", "/", "**"]):
-            return json.dumps({"type": "tool_call", "tool": "calculator", "args": {"expression": user}}, ensure_ascii=False)
+            expr = "".join(c for c in user if c in "0123456789+-*/().% \t")
+            expr = expr.strip() or user
+            return json.dumps({"type": "tool_call", "tool": "calculator", "args": {"expression": expr}}, ensure_ascii=False)
         return json.dumps({"type": "final", "answer": f"(mock) I received: {user}"}, ensure_ascii=False)
 
